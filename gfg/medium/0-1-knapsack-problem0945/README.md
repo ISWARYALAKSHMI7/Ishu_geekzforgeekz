@@ -35,45 +35,38 @@ Explanation: Choose the third item (value 30, weight 2) and the last item (value
 **Language:** Java  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-11-27T06:41:58.806Z  
+**Submitted:** 2026-11-27T09:44:16.768Z  
 
 ```java
 class Solution {
-    public int knapsack(int W, int val[], int wt[]) {
-        // code here
-        int n = val.length;
-        
-        int[][] dp = new int[n][W+1];
-        for(int[] row: dp){
-            Arrays.fill(row, -1);
-        }
-        
-        return solve(W, val, wt, n-1, dp);
-    }
+  public int knapsack(int w,int val[], int wt[]) {
+    // code here
+    int n = val.length;
+
+    int[] dp = new int[w + 1];
     
-    public static int solve(int w, int[] val, int[] wt, int index,int[][] dp){
-        
-        if(0 == index){
-            if(wt[0] <= w){
-                return val[0];
-            }
-            return 0;
+    for (int cap=wt[0];cap<= w; cap++) {
+        if (wt[0] <= cap) {
+            dp[cap] = val[0];
         }
-        
-        if(dp[index][w] != -1){
-            return dp[index][w];
-        }
-        
-        int take = 0;
-        if(wt[index] <= w){
-            take = val[index] + solve(w - wt[index], val, wt, index - 1, dp);
-        }
-        int nottake = solve(w, val, wt, index - 1, dp);
-        
-        dp[index][w] = Math.max(take, nottake);
-        
-        return dp[index][w];
     }
+
+    for (int i = 1; i < n; i++) {
+      for (int cap = w; cap>=wt[i];cap--){
+          
+
+        int take = val[i]+ dp[cap-wt[i]];
+    
+        int nottake = dp[cap];
+          
+        dp[cap]=Math.max(take, nottake);
+        
+        }
+    }
+
+    return dp[w];
+
+  }
 }
 
 ```
